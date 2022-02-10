@@ -3,17 +3,15 @@ async function render(){
     let response = await fetch("https://restcountries.com/v3.1/region/europe?fields=name,maps,cca2,capital");
     const countries = await response.json();
     let listOfCountries = "";
+    
+// Génération de la liste déroulante
     for(let country of countries){
-        if(country.cca2 == "FR"){
-            listOfCountries += `<option value="${country.cca2}" selected>${country.name.official}</option>`;
-        }else{
-            listOfCountries += `<option value="${country.cca2}">${country.name.official}</option>`;
-        
-        }
+        listOfCountries = countries.map(country => `<option value="${country.cca2}"${country.cca2 == "FR" ? 'selected' : ''}>${country.name.official}</option>`);   
     }
     const element = document.querySelector("#countries");
     element.innerHTML = listOfCountries;
     
+
 // Affichage de la carte de la France    
     response = await fetch(`https://restcountries.com/v3.1/alpha/FR?fields=capitalInfo`);
     const france = await response.json();
